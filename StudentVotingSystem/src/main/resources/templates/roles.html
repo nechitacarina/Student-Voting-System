@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Roles</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Manage Roles</h2></div>
+		<div class="m-2">
+			<a class="h3 text-decoration-none" th:href="@{/roles/new}">Add New Role</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+				<tr>
+					<th>Id</th>
+					<th>Denumire</th>
+					<th>Permisiuni</th>
+					<th></th>
+				</tr>
+				<tbody>
+					<th:block th:each="rol : ${listRoles}">
+						<tr>
+							<td> [[${rol.id_rol}]]</td>
+							<td> [[${rol.denumire}]]</td>
+							<td> [[${rol.permissions}]]</td>
+							<td>
+								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/roles/edit/' + ${rol.id_rol}}">Edit</a>
+								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/roles/delete/' + ${rol.id_rol}}">Delete</a>
+							</td>
+						</tr>
+					</th:block>
+				</tbody>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/system_admin_home}]]";
+		}
+	</script>
+</body>
+</html>

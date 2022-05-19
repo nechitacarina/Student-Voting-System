@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Students</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Manage Students</h2></div>
+		<div class="m-2">
+			<a class="h3 text-decoration-none" th:href="@{/students/new}">Add New Student</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div>
+			<form th:action="@{/students}">
+				Filter: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Name, Email, CNP"/>
+				&nbsp;
+				<input type="submit" value="Search" />
+				&nbsp;
+				<input type="button" value="Clear" onclick="clearFilter()"/>
+			</form>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		 <div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 80%; margin-left: 15%;">
+				<thead class="table-dark">
+					<tr>
+						<th>ID Student</th>
+						<th>CNP</th>
+						<th>Nume</th>
+						<th>Prenume</th>
+						<th>Telefon</th>
+						<th>Email</th>
+						<th>Grup</th>
+						<th></th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<th:block th:each="student : ${StudentsList}">
+						<tr>
+							<td> [[${student.id_student}]]</td>
+							<td> [[${student.user.CNP}]]</td>
+							<td> [[${student.user.nume}]]</td>
+							<td> [[${student.user.prenume}]]</td>
+							<td> [[${student.user.telefon}]]</td>
+							<td> [[${student.user.email}]]</td>
+							<td> [[${student.groups}]]</td>
+							<td>
+								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/students/edit/' + ${student.id_student}}">Edit</a>
+								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/students/delete/' + ${student.id_student}}">Delete</a>
+							</td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+		
+		<div>
+			Total Students: [[${totalStudents}]] - Page [[${currentPage}]] of [[${totalPages}]]
+			&nbsp;
+			
+			<a th:if="${currentPage > 1}" th:href="@{/students/page/1}">First</a>
+			<span th:unless="${currentPage > 1}">First</span>
+			
+			<a th:if="${currentPage > 1}" th:href="@{'/students/page/' + ${currentPage - 1}}">Previous</a>
+			<span th:unless="${currentPage > 1}">Previous</span>
+			
+			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+				<a th:if="${i!=currentPage}" th:href="@{'/students/page/' + ${i}}">[[${i}]]</a>
+				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+			</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/students/page/' + ${currentPage + 1}}">Next</a>
+			<span th:unless="${currentPage < totalPages}">Next</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/students/page/' + ${totalPages}}">Last</a>
+			<span th:unless="${currentPage < totalPages}">Last</span>
+			
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 15.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/voting_admin_home}]]";
+		}
+		function clearFilter(){
+			window.location="/students";
+		}
+	</script>
+</body>
+</html>

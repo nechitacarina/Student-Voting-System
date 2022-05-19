@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Groups</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Manage Groups</h2></div>
+		<div class="m-2">
+			<a class="h3 text-decoration-none" th:href="@{/groups/new}">Add New Group</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+					<tr>
+						<th>Id</th>
+						<th>Facultate</th>
+						<th>Specializare</th>
+						<th>An</th>
+						<th>Grupa</th>
+						<th>Universitate</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="group : ${GroupsList}">
+						<tr>
+							<td> [[${group.id_grup}]]</td>
+							<td> [[${group.facultate}]]</td>
+							<td> [[${group.specializare}]]</td>
+							<td> [[${group.an}]]</td>
+							<td> [[${group.grupa}]]</td>
+							<td> [[${group.universitate}]]</td>
+							<td>
+								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/groups/edit/' + ${group.id_grup}}">Edit</a>
+								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/groups/delete/' + ${group.id_grup}}">Delete</a>
+							</td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+		<div>
+			Total Groups: [[${totalGroups}]] - Page [[${currentPage}]] of [[${totalPages}]]
+			&nbsp;
+			
+			<a th:if="${currentPage > 1}" th:href="@{/groups/page/1}">First</a>
+			<span th:unless="${currentPage > 1}">First</span>
+			
+			<a th:if="${currentPage > 1}" th:href="@{'/groups/page/' + ${currentPage - 1}}">Previous</a>
+			<span th:unless="${currentPage > 1}">Previous</span>
+			
+			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+				<a th:if="${i!=currentPage}" th:href="@{'/groups/page/' + ${i}}">[[${i}]]</a>
+				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+			</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/groups/page/' + ${currentPage + 1}}">Next</a>
+			<span th:unless="${currentPage < totalPages}">Next</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/groups/page/' + ${totalPages}}">Last</a>
+			<span th:unless="${currentPage < totalPages}">Last</span>
+			
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/voting_admin_home}]]";
+		}
+		function clearFilter(){
+			window.location="/groups";
+		}
+	</script>
+</body>
+</html>

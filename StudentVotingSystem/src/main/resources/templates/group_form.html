@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>[[${pageTitle}]]</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="text-center"><h2>[[${pageTitle}]]</h2></div>
+		
+		<form th:action="@{/groups/save}" method="post" th:object="${group}" 
+			style="max-width: 500px; margin:0 auto;">
+				<input type="hidden" th:field="*{id_grup}">
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Facultate</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{facultate}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Specializare</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{specializare}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">An</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{an}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Grupa</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{grupa}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Universitate</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{universitate}"/>
+					</div>
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary m-2">Save</button>
+					<button type="button" class=" btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		function cancelForm(){
+			window.location = "[[@{/groups}]]";
+		}
+	</script>
+</body>
+</html>

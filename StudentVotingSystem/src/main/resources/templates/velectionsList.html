@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Available Elections</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Available Elections</h2></div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		  <div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+				<tr>
+					<th>ID</th>
+					<th>Denumire</th>
+					<th>Data Start</th>
+					<th>Ora Start</th>
+					<th>Data Final</th>
+					<th>Ora Final</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="election : ${ElectionsList}">
+						<tr>
+							<td> [[${election.id_chestionar}]]</td>
+							<td> [[${election.denumire}]]</td>
+							<td> [[${election.data_start}]]</td>
+							<td> [[${election.ora_start}]]</td>
+							<td> [[${election.data_final}]]</td>
+							<td> [[${election.ora_final}]]</td>
+							<td><a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/voteFor/' + ${election.id_chestionar}}">See Candidates</a></td>
+							
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/voter_home}]]";
+		}
+	</script>
+</body>
+</html>

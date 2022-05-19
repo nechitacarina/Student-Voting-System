@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Users</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		
+		<div class="m-2">
+			<h2>Manage Users</h2>
+			<a class="h3 text-decoration-none" th:href="@{/users/new}">Add New User</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div>
+			<form th:action="@{/users}">
+				Filter: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Name, Email, CNP"/>
+				&nbsp;
+				<input type="submit" value="Search" />
+				&nbsp;
+				<input type="button" value="Clear" onclick="clearFilter()"/>
+			</form>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		  <div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+					<tr>
+						<th>CNP</th>
+						<th>Nume</th>
+						<th>Prenume</th>
+						<th>Telefon</th>
+						<th>Email</th>
+						<th>Rol</th>
+						<th></th>
+					</tr>	
+				</thead>
+					<tbody>
+						<th:block th:each="user : ${UsersList}">
+							<tr>
+								<td> [[${user.CNP}]]</td>
+								<td> [[${user.nume}]]</td>
+								<td> [[${user.prenume}]]</td>
+								<td> [[${user.telefon}]]</td>
+								<td> [[${user.email}]]</td>
+								<td> [[${user.roles}]]</td>
+								<td>
+									<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/users/edit/' + ${user.CNP}}">Edit</a>
+									<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/users/delete/' + ${user.CNP}}">Delete</a>
+								</td>
+							</tr>
+						</th:block>
+					</tbody>
+			</table>
+		</div>
+		<div>
+			Total Users: [[${totalUsers}]] - Page [[${currentPage}]] of [[${totalPages}]]
+			&nbsp;
+			
+			<a th:if="${currentPage > 1}" th:href="@{/users/page/1}">First</a>
+			<span th:unless="${currentPage > 1}">First</span>
+			
+			<a th:if="${currentPage > 1}" th:href="@{'/users/page/' + ${currentPage - 1}}">Previous</a>
+			<span th:unless="${currentPage > 1}">Previous</span>
+			
+			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+				<a th:if="${i!=currentPage}" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+			</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a>
+			<span th:unless="${currentPage < totalPages}">Next</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${totalPages}}">Last</a>
+			<span th:unless="${currentPage < totalPages}">Last</span>
+			
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/system_admin_home}]]";
+		}
+		function clearFilter(){
+			window.location="/users";
+		}
+	</script>
+	
+</body>
+</html>

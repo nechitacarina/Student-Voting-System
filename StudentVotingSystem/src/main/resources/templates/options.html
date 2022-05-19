@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Candidates</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Manage Candidates</h2></div>
+		<div class="m-2">
+			<a class="h3 text-decoration-none" th:href="@{/options/new}">Add New Candidate</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div>
+			<form th:action="@{/options}">
+				Filter: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Denumire"/>
+				&nbsp;
+				<input type="submit" value="Search" />
+				&nbsp;
+				<input type="button" value="Clear" onclick="clearFilter()"/>
+			</form>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		  <div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+					<tr>
+						<th>ID</th>
+						<th>Denumire</th>
+						<th>Numar Voturi Atrase</th>
+						<th>Alegere</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="option : ${OptionsList}">
+						<tr>
+							<td> [[${option.id_optiune}]]</td>
+							<td> [[${option.denumire}]]</td>
+							<td> [[${option.nr_voturi_atrase}]]</td>
+							<td> [[${option.election.denumire}]]</td>
+							<td>
+								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/options/edit/' + ${option.id_optiune}}">Edit</a>
+								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/options/delete/' + ${option.id_optiune}}">Delete</a>
+							</td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+		<div>
+			Total Options: [[${totalOptions}]] - Page [[${currentPage}]] of [[${totalPages}]]
+			&nbsp;
+			
+			<a th:if="${currentPage > 1}" th:href="@{/options/page/1}">First</a>
+			<span th:unless="${currentPage > 1}">First</span>
+			
+			<a th:if="${currentPage > 1}" th:href="@{'/options/page/' + ${currentPage - 1}}">Previous</a>
+			<span th:unless="${currentPage > 1}">Previous</span>
+			
+			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+				<a th:if="${i!=currentPage}" th:href="@{'/options/page/' + ${i}}">[[${i}]]</a>
+				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+			</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/options/page/' + ${currentPage + 1}}">Next</a>
+			<span th:unless="${currentPage < totalPages}">Next</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/options/page/' + ${totalPages}}">Last</a>
+			<span th:unless="${currentPage < totalPages}">Last</span>
+			
+			
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/voting_admin_home}]]";
+		}
+		function clearFilter(){
+			window.location="/elections";
+		}
+	</script>
+</body>
+</html>

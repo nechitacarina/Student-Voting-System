@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>[[${pageTitle}]]</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="text-center"><h2>[[${pageTitle}]]</h2></div>
+		
+		<form th:action="@{/users/save}" method="post" th:object="${user}" 
+			style="max-width: 500px; margin:0 auto;">
+			
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">CNP</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{CNP}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Nume</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{nume}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Prenume</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{prenume}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Telefon</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{telefon}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Email</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="text" required th:field="*{email}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Rol</label>
+					<div class="col-sm-8">
+						
+							<th:block th:each="rol : ${listRoles}">
+								<div>
+									<input type="radio" required th:field="*{roles}" th:text="${rol.denumire}"
+										th:value = "${rol.id_rol}" class="m-2"/>
+								</div>
+							</th:block>
+						
+					</div>
+				</div>
+					
+					<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Want to change the password?</label>
+					<div class="col-sm-8">
+						<input class="form-control" type="password" th:field="*{password}"/>
+					</div>
+				</div>
+				
+					
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary m-2">Save</button>
+					<button type="button" class=" btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		function cancelForm(){
+			window.location = "[[@{/users}]]";
+		}
+	</script>
+</body>
+</html>

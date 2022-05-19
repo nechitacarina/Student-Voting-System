@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage Elections</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Manage Elections</h2></div>
+		<div class="m-2" sec:authorize="hasAnyAuthority('voting admin')">
+			<a class="h3 text-decoration-none" th:href="@{/elections/new}">Add New Election</a>
+		</div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div>
+			<form th:action="@{/elections}">
+				Filter: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Denumire"/>
+				&nbsp;
+				<input type="submit" value="Search" />
+				&nbsp;
+				<input type="button" value="Clear" onclick="clearFilter()"/>
+			</form>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		  <div>
+			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
+				<thead class="table-dark">
+					<tr>
+						<th>ID</th>
+						<th>Denumire</th>
+						<th>Numar Optiuni</th>
+						<th>Data Start</th>
+						<th>Ora Start</th>
+						<th>Data Final</th>
+						<th>Ora Final</th>
+						<th>Grup</th>
+						<th>Status</th>
+						<th></th>
+					</tr>	
+				</thead>
+				<tbody>
+					<th:block th:each="election : ${ElectionsList}">
+						<tr>
+							<td> [[${election.id_chestionar}]]</td>
+							<td> [[${election.denumire}]]</td>
+							<td> [[${election.nr_max_optiuni}]]</td>
+							<td> [[${election.data_start}]]</td>
+							<td> [[${election.ora_start}]]</td>
+							<td> [[${election.data_final}]]</td>
+							<td> [[${election.ora_final}]]</td>
+							<td> [[${election.groups}]]</td>
+							<td> [[${election.status}]]</td>
+							<td>
+								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/elections/edit/' + ${election.id_chestionar}}">Edit</a>
+								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/elections/delete/' + ${election.id_chestionar}}">Delete</a>
+							</td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+		<div>
+			Total Elections: [[${totalElections}]] - Page [[${currentPage}]] of [[${totalPages}]]
+			&nbsp;
+			
+			<a th:if="${currentPage > 1}" th:href="@{/elections/page/1}">First</a>
+			<span th:unless="${currentPage > 1}">First</span>
+			
+			<a th:if="${currentPage > 1}" th:href="@{'/elections/page/' + ${currentPage - 1}}">Previous</a>
+			<span th:unless="${currentPage > 1}">Previous</span>
+			
+			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+				<a th:if="${i!=currentPage}" th:href="@{'/elections/page/' + ${i}}">[[${i}]]</a>
+				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+			</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/elections/page/' + ${currentPage + 1}}">Next</a>
+			<span th:unless="${currentPage < totalPages}">Next</span>
+			
+			<a th:if="${currentPage < totalPages}" th:href="@{'/elections/page/' + ${totalPages}}">Last</a>
+			<span th:unless="${currentPage < totalPages}">Last</span>
+			
+			
+		</div>
+	</div>
+	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
+	<script type="text/javascript">
+		function GoBack(){
+			window.location = "[[@{/voting_admin_home}]]";
+		}
+		function clearFilter(){
+			window.location="/elections";
+		}
+	</script>
+</body>
+</html>

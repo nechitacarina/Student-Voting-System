@@ -1,0 +1,38 @@
+<head>
+<meta charset="ISO-8859-1">
+<title> Candidates</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div><h2>Candidates</h2></div>
+		
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		<form th:action="@{/voteFor/save}" method="post" th:object="${election}"  style="max-width: 500px; margin:0 auto;">
+			<input type="hidden" th:field="*{id_chestionar}">
+		
+			<div th:each="option: ${OptionsList}" >
+				<div th:if="${option.election.nr_max_optiuni > 1}">
+					<input type="checkbox"  th:field="*{options}" th:text="${option.denumire}" th:value ="${option.id_optiune}"  class="m-2"/>
+				</div>
+				<div th:unless="${option.election.nr_max_optiuni > 1}">
+					<input type="radio" th:field="*{options}" th:text="${option.denumire}" th:value ="${option.id_optiune}" class="m-2"/>
+				</div>
+				
+			</div>
+			
+			<div class="text-center">
+					<button type="submit" class="btn btn-primary m-2">Save</button>
+					<button type="button" class=" btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		function cancelForm(){
+			window.location = "[[@{/velectionsList}]]";
+		}
+	</script>
+</body>
+</html>
