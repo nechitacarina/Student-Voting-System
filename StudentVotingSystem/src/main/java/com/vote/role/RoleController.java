@@ -2,9 +2,12 @@ package com.vote.role;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,15 +35,23 @@ public class RoleController {
 		List<Permission> listPermissions = permissionService.listAll();
 		model.addAttribute("listPermissions", listPermissions);
 		model.addAttribute("role", new Role());
-		model.addAttribute("pageTitle", "Add New Role");
+		model.addAttribute("pageTitle", "Adauga un rol");
 		return "role_form";
 	}
 	
 	@PostMapping("/roles/save")
-	public String saveRole(Role role, RedirectAttributes ra) {
-		roleService.save(role);
-		ra.addFlashAttribute("message", "The role has been saved succesfully.");
-		return "redirect:/roles";
+	public String saveRole(@Valid Role role,  BindingResult bindingResult, RedirectAttributes ra, Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("pageTitle", "Formular rol");
+			List<Permission> listPermissions = permissionService.listAll();
+			model.addAttribute("listPermissions", listPermissions);
+			return "role_form";
+		}
+		else {
+			roleService.save(role);
+			ra.addFlashAttribute("message", "Rolul a fost salvat cu succes!");
+			return "redirect:/roles";
+		}
 	}
 	
 	@GetMapping("/roles/edit/{id_rol}")
@@ -50,7 +61,7 @@ public class RoleController {
 			model.addAttribute("role", role);
 			List<Permission> listPermissions = permissionService.listAll();
 			model.addAttribute("listPermissions", listPermissions);
-			model.addAttribute("pageTitle", "Edit Role (ID: " + id_rol + ")");
+			model.addAttribute("pageTitle", "Modificare Rol (ID: " + id_rol + ")");
 			return "role_form";
 		} catch (RoleNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
@@ -61,7 +72,7 @@ public class RoleController {
 	@GetMapping("/roles/delete/{id_rol}")
 	public String deleteRole(@PathVariable("id_rol") Integer id_rol, RedirectAttributes ra) {
 		roleService.delete(id_rol);
-		ra.addFlashAttribute("message","The role has been deleted");
+		ra.addFlashAttribute("message","Rolul a fost sters cu succes!");
 		return "redirect:/roles";
 	}
 }

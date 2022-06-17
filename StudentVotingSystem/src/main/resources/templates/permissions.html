@@ -2,49 +2,87 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Manage Permissions</title>
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<title>Utilizatori</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/systemadmin.css}"/>
+<script src="https://kit.fontawesome.com/869eb986ed.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container-fluid text-center">
-		<div><h2>Manage Permissions</h2></div>
-		<div class="m-2">
-			<a class="h3 text-decoration-none" th:href="@{/permissions/new}">Add New Permission</a>
+	<nav class="navbar navbar-expand-md navbar-dark">
+		<a th:href="@{/system_admin_home}" class="navbar-brand">Student Voting System</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#toggleMobileMenu"
+			aria-controls="toggleMobileMenu"
+			aria-expanded="false"
+			aria-label="Toggle Navigation"
+		>
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="toggleMobileMenu">
+			<ul class="navbar-nav ms-auto text-center">
+				<li>
+					<a class="nav-link" th:href="@{/users}">Utilizatori</a>
+				</li>
+				<li>
+					<a class="nav-link" th:href="@{/roles}">Roluri</a>
+				</li>
+				<li>
+					<a class="nav-link active" th:href="@{/permissions}">Permisiuni</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">Profil</a>
+					<ul class="dropdown-menu"  aria-labelledby="navbarDropdown">
+						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities"></span></li>
+						<li class="dropdown-item">
+							<form th:action="@{/logout}" method="post">	
+								<input class="button_logout1" type="submit" value="Logout" />
+							</form>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</div>
+	</nav>
 		
-		<div th:if="${message}" class="alert alert-success text-center">
-			[[${message}]]
-		</div>
-		
-		<div>
-			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
-				<thead class="table-dark">
+	<div class="add">
+		<a class="h4 text-decoration-none" th:href="@{/permissions/new}">Adauga Permisiuni</a>
+	</div>
+	<div th:if="${message}" class="alert alert-success text-center">
+		[[${message}]]
+	</div>
+	
+	<div class="tables">
+		<table class="table table-bordered table-hover" >
+			<thead>
 				<tr>
-					<th>Id</th>
+					<th>#</th>
 					<th>Descriere</th>
 					<th></th>
 				</tr>
-				<tbody>
-					<th:block th:each="permission : ${listPermissions}">
+			</thead>
+			<tbody>
+				<th:block th:each="permission : ${listPermissions}">
 						<tr>
 							<td> [[${permission.id_permisiune}]]</td>
 							<td> [[${permission.descriere}]]</td>
-							<td>
-								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/permissions/edit/' + ${permission.id_permisiune}}">Edit</a>
-								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/permissions/delete/' + ${permission.id_permisiune}}">Delete</a>
-							</td>
-						</tr>
-					</th:block>
-				</tbody>
-				</thead>
-			</table>
-		</div>
+						<td class="table-column-buttons">
+							<div class="row d-flex justify-content-center">
+								<div class="col-md-6 text-center">
+									<a class="btn btn-warning" th:href="@{'/permissions/edit/' + ${permission.id_permisiune}}"><i class="fas fa-edit"></i></a>
+								</div>
+								<div class="col-md-6 text-center">
+									<a class="btn btn-danger" onclick="return confirm('Sunteti sigur ca doriti sa stergeti aceasta permisiune?');" th:href="@{'/permissions/delete/' + ${permission.id_permisiune}}"><i class="fa-solid fa-trash-can"></i></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
 	</div>
-	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
-	<script type="text/javascript">
-		function GoBack(){
-			window.location = "[[@{/system_admin_home}]]";
-		}
-	</script>
 </body>
 </html>

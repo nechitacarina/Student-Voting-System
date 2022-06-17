@@ -15,7 +15,7 @@ public interface ElectionRepository extends PagingAndSortingRepository<Election,
 			  value = "SELECT DISTINCT chestionar.* FROM chestionar, grup_chestionar, grup_student WHERE grup_student.id_student = :id_student "
 			  		+ "AND grup_chestionar.id_grup=grup_student.id_grup "
 			  		+ "AND grup_chestionar.id_chestionar = chestionar.id_chestionar "
-			  		+ "AND chestionar.data_final>CURRENT_DATE ",
+			  		+ "AND chestionar.data_final>=CURRENT_DATE ",
 			  nativeQuery = true)
 
 	List<Election> findElectionByStudent(@Param("id_student") Integer id_student);

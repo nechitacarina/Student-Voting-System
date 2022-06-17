@@ -3,23 +3,76 @@
 xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Welcome</title>
+<title>Bun venit!</title>
 <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/styles/systemadmin.css}"/>
+<script src="https://kit.fontawesome.com/869eb986ed.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container-fluid text-center">
-		<div sec:authorize="isAuthenticated()">
-			Welcome <b><span sec:authentication="principal.nume"></span></b>
-			<b><span sec:authentication="principal.prenume"></span></b><br>
-			You are logged as: <span sec:authentication="principal.authorities"></span>
-			<form th:action="@{/logout}" method="post">
-				<input type="submit" value="Logout" />
-			</form>
+	<div class="page">
+		<div class="sidebar">
+		<div class="sidebar-header">
+				<div class="brand-name-container">
+					<p class="brand-name">Student<br/>
+					<span class="brand-subname">Voting System</span>
+				</div>
+			</div>
+			<div class="sidebar-body">
+				<ul class="navigation-list">
+					<hr style="color: white;">
+					<li class="navigation-list-item">
+						<div class="row">
+							<div class="col-2">
+								<i class="fa-solid fa-users"></i>
+							</div>
+							<div class="col-10">
+								<a class="navigation-link" th:href="@{/users}">Gestionare Utilizatori</a>
+							</div>
+						</div>
+					</li>
+					<hr style="color: white;">
+					<li class="navigation-list-item ">
+						<div class="row">
+							<div class="col-2">
+								<i class="fa-solid fa-address-card"></i>
+							</div>
+							<div class="col-10">
+								<a  class="navigation-link" th:href="@{/roles}">Gestionare Roluri</a>
+							</div>
+						</div>
+					</li>
+					<hr style="color: white;">
+					<li class="navigation-list-item ">
+						<div class="row">
+							<div class="col-2">
+								<i class="fa-brands fa-expeditedssl"></i>
+							</div>
+							<div class="col-10">
+								<a class="navigation-link" th:href="@{/permissions}">Gestionare Permisiuni</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<h1>Welcome Admin System!</h1>
-		<h2><a class="text-decoration-none" th:href="@{/roles}">Manage Roles</a></h2>
-		<h2><a class="text-decoration-none" th:href="@{/permissions}">Manage Permissions</a></h2>
-		<h2><a class="text-decoration-none" th:href="@{/users}">Manage Users</a></h2>
+	</div>
+	<div class="container1">
+		<div class="row">
+			<div class="col-10">
+				<form th:action="@{/logout}" method="post">	
+					<input class="button_logout" type="submit" value="Logout" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container2">
+		<div class="row">
+			<div>
+				<div sec:authorize="isAuthenticated()" class="auth">
+					Sunteti logat ca: <b><span sec:authentication="principal.authorities"></span></b>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

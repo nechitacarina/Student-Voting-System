@@ -15,7 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import com.vote.group.Group;
 import com.vote.option.Option;
@@ -29,19 +31,23 @@ public class Election {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id_chestionar;
 	
+	@Size(min = 3, max = 50)
 	String denumire;
 	
+	@Min(value=1,  message="1=alegere cu raspuns simplu, 2=alegere cu raspuns multiplu")
+	@Max(value=2,  message="1=alegere cu raspuns simplu, 2=alegere cu raspuns multiplu")
 	Integer nr_max_optiuni;
-	
+
 	Date data_start;
 	
 	String ora_start;
 	
 	Date data_final;
-
+	
 	String ora_final;
 	
-	String status;
+	String status = "in desfasurare";
+	
 
 	@ManyToMany(cascade = CascadeType.PERSIST) //The CascadeType will allow to delete the election but not the group and vice versa
 	@JoinTable(

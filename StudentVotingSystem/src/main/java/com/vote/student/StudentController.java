@@ -57,14 +57,14 @@ public class StudentController {
 		model.addAttribute("student", new Student());
 		model.addAttribute("UsersList", UsersList);
 		model.addAttribute("GroupsList", GroupsList);
-		model.addAttribute("pageTitle", "Add New Student");
+		model.addAttribute("pageTitle", "Adauga Student");
 		return "student_form";
 	}
 	
 	@PostMapping("/students/save")
 	public String saveStudent(Student student, RedirectAttributes ra) {
 		studentService.save(student);
-		ra.addFlashAttribute("message", "The student has been saved succesfully.");
+		ra.addFlashAttribute("message", "Studentul a fost salvat cu succes!");
 		return "redirect:/students";
 	}
 	
@@ -72,7 +72,7 @@ public class StudentController {
 	public String showStudentEditForm(@PathVariable("id_student") Integer id_student, Model model, RedirectAttributes ra) {
 			Student student = studentService.get(id_student);
 			model.addAttribute("student", student);
-			model.addAttribute("pageTitle", "Edit student (ID: " + id_student + ")");
+			model.addAttribute("pageTitle", "Modificare student (ID: " + id_student + ")");
 			List<User> UsersList = userService.listAll();
 			List<Group> GroupsList = groupService.listAll();
 			model.addAttribute("UsersList", UsersList);
@@ -83,7 +83,7 @@ public class StudentController {
 	@GetMapping("/students/delete/{id_student}")
 	public String deleteStudent(@PathVariable("id_student") Integer id_student, RedirectAttributes ra) {
 		studentService.delete(id_student);
-		ra.addFlashAttribute("message","The student has been deleted");
+		ra.addFlashAttribute("message","Studentul a fost sters cu succes!");
 		return "redirect:/students";
 	}
 

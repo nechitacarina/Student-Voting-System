@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="grup")
@@ -14,10 +17,15 @@ public class Group {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id_grup;
 	
+	@Size(min = 3, max = 50)
 	String facultate;
+	@Size(min = 3, max = 50)
 	String specializare;
+	@Min(value=1, message="Se pot introduce valori cuprinse in intervalul 1-6")
+	@Max(value=6)
 	Integer an;
 	Integer grupa;
+	@Size(min = 3, max = 50)
 	String universitate;
 	
 	public Integer getId_grup() {

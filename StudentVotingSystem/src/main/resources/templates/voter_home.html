@@ -3,21 +3,52 @@
 xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Welcome</title>
+<title>Bun venit!</title>
 <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/styles/voter.css}"/>
+<script src="https://kit.fontawesome.com/869eb986ed.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container-fluid text-center">
-		<div sec:authorize="isAuthenticated()">
-			Welcome <b><span sec:authentication="principal.nume"></span></b>
-			<b><span sec:authentication="principal.prenume"></span></b><br>
-			You are logged as: <span sec:authentication="principal.authorities"></span>
-			<form th:action="@{/logout}" method="post">
-				<input type="submit" value="Logout" />
-			</form>
+	<div class="page">
+		<div class="sidebar">
+		<div class="sidebar-header">
+				<div class="brand-name-container">
+					<p class="brand-name">Student<br/>
+					<span class="brand-subname">Voting System</span>
+				</div>
+			</div>
+			<div class="sidebar-body">
+					<hr style="color: white;">
+					<h3>Parerea ta conteaza!</h3>
+			</div>
 		</div>
-		<h1>Welcome Voter!</h1>
-		<h2><a class="text-decoration-none" th:href="@{/velectionsList}">See elections</a></h2>
+	</div>
+	<div class="container1">
+		<div class="row">
+			<div class="col-10">
+				<form th:action="@{/logout}" method="post">	
+					<input class="button_logout" type="submit" value="Logout" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container2">
+		<div class="row">
+			<div>
+				<div sec:authorize="isAuthenticated()" class="auth">
+					Sunteti logat ca: <b><span sec:authentication="principal.authorities"></span></b>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container3">
+		<div class="row">
+			<div>
+				<div class="col-12">
+					<h1>Cu aceste credentiale aveti acces la urmatoarele sectiuni:</h1> <a class="text-decoration-none" th:href="@{/velectionsList}"><b>Continuati in sectiunea -> Vizualizare chestionare</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

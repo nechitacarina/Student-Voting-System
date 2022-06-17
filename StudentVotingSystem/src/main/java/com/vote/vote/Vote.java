@@ -36,7 +36,7 @@ public class Vote {
 	@JoinColumn(name="id_chestionar")
 	private Election election;	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="id_student")
 	private User user;
 	

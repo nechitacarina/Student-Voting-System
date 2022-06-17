@@ -20,7 +20,7 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 	
 	public Page<User> listAll(int pageNumber, String keyword){
-		Pageable pageable = PageRequest.of(pageNumber - 1, 3);
+		Pageable pageable = PageRequest.of(pageNumber - 1, 6);
 		if(keyword != null) {
 			return repo.findAll(keyword, pageable);
 		}

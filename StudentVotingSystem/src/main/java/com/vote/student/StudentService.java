@@ -15,7 +15,7 @@ public class StudentService {
 	private StudentRepository studentRepo;
 	
 	public Page<Student> listAll(int pageNumber, String keyword){
-		Pageable pageable = PageRequest.of(pageNumber - 1, 3);
+		Pageable pageable = PageRequest.of(pageNumber - 1, 5);
 		if(keyword != null) {
 			return studentRepo.findAll(keyword, pageable);
 		}

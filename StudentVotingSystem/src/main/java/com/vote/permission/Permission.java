@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="permisiune")
@@ -14,6 +15,7 @@ public class Permission {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id_permisiune;
 	
+	@Size(min = 3, max = 50)
 	String descriere;
 
 	public Permission() {}

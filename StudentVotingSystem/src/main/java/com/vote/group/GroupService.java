@@ -17,7 +17,7 @@ public class GroupService {
 	private GroupRepository groupRepo;
 	
 	public Page<Group> listAll(int pageNumber){
-		Pageable pageable = PageRequest.of(pageNumber - 1, 2);
+		Pageable pageable = PageRequest.of(pageNumber - 1, 8);
 		return groupRepo.findAll(pageable);
 	}
 	

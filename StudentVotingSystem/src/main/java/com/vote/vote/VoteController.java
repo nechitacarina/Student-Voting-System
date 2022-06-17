@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vote.election.Election;
 import com.vote.election.ElectionRepository;
@@ -61,7 +62,7 @@ public class VoteController {
 	}
 	
 	@PostMapping("/voteFor/save")
-	public String voteFor(Vote vote, @RequestParam("id_chestionar") Integer id_chestionar,  @RequestParam("options") Integer[] id_optiune){
+	public String voteFor(Vote vote, @RequestParam("id_chestionar") Integer id_chestionar,  @RequestParam("options") Integer[] id_optiune,  RedirectAttributes ra){
 		Authentication loggedInUser  = SecurityContextHolder.getContext().getAuthentication();
 		String cnp = loggedInUser.getName();
 		User user = userRepo.findById(cnp).get();
@@ -71,7 +72,8 @@ public class VoteController {
 		Optional<Vote> result = voteRepo.findByElectionAndUser(election, user);
 
 		if(result.isPresent()) {
-			return "alreadyVoted";
+			ra.addFlashAttribute("message_error", "Ai votat deja pentru acest chestionar!");
+			return "redirect:/velectionsList";
 		}
 		else
 		{
@@ -83,7 +85,8 @@ public class VoteController {
 				}
 			}
 			voteService.save(vote);
-			return "voted";
+			ra.addFlashAttribute("message_success", "Votul tau a fost inregistrat! Multumim!");
+			return "redirect:/velectionsList";
 		}
 		
 	}

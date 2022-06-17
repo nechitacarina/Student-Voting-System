@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.vote.permission.Permission;
 
@@ -23,6 +24,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id_rol;
 	
+	@Size(min = 3, max = 50)
 	private String denumire;
 
 	public Role() {}

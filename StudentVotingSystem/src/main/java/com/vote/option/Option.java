@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.vote.election.Election;
 
@@ -18,6 +19,7 @@ public class Option {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //primary key auto-increment
 	Integer id_optiune;
 	
+	@Size(min = 3, max = 50)
 	String denumire;
 	Integer nr_voturi_atrase = 0;
 	

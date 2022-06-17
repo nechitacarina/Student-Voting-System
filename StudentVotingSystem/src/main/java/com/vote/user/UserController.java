@@ -2,11 +2,14 @@ package com.vote.user;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,22 +50,30 @@ public class UserController {
 		List<Role> listRoles = rolService.listAll();
 		model.addAttribute("user", new User());
 		model.addAttribute("listRoles", listRoles);
-		model.addAttribute("pageTitle", "Add New User");
+		model.addAttribute("pageTitle", "Adauga Utilizator");
 		return "user_form";
 	}
 	
 	@PostMapping("/users/save")
-	public String saveUser(User user, RedirectAttributes ra) {
-		userService.save(user);
-		ra.addFlashAttribute("message", "The user has been saved succesfully.");
-		return "redirect:/users";
+	public String saveUser(@Valid User user, BindingResult bindingResult, RedirectAttributes ra,Model model) {
+		if (bindingResult.hasErrors()) {
+			List<Role> listRoles = rolService.listAll();
+			model.addAttribute("listRoles", listRoles);
+			model.addAttribute("pageTitle", "Formular utilizator");
+			return "user_form";
+		}
+		else {
+			userService.save(user);
+			ra.addFlashAttribute("message", "Utilizatorul a fost salvat cu succes!");
+			return "redirect:/users";
+		}
 	}
 	
 	@GetMapping("/users/edit/{CNP}")
 	public String showEditForm(@PathVariable("CNP") String CNP, Model model, RedirectAttributes ra) {
 			User user = userService.get(CNP);
 			model.addAttribute("user", user);
-			model.addAttribute("pageTitle", "Edit User (CNP: " + CNP + ")");
+			model.addAttribute("pageTitle", "Modificare Utilizator (CNP: " + CNP + ")");
 			List<Role> listRoles = rolService.listAll();
 			model.addAttribute("listRoles", listRoles);
 			return "user_form";
@@ -71,7 +82,7 @@ public class UserController {
 	@GetMapping("/users/delete/{CNP}")
 	public String deleteRole(@PathVariable("CNP") String CNP, RedirectAttributes ra) {
 		userService.delete(CNP);
-		ra.addFlashAttribute("message","The user has been deleted");
+		ra.addFlashAttribute("message","Utilizatorul a fost sters cu succes!");
 		return "redirect:/users";
 	}
 	

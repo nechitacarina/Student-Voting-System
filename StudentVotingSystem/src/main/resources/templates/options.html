@@ -2,92 +2,130 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Manage Candidates</title>
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<title>Optiuni</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" th:href="@{/styles/votingadmin.css}"/>
+<script src="https://kit.fontawesome.com/869eb986ed.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container-fluid text-center">
-		<div><h2>Manage Candidates</h2></div>
-		<div class="m-2">
-			<a class="h3 text-decoration-none" th:href="@{/options/new}">Add New Candidate</a>
+	<nav class="navbar navbar-expand-md navbar-dark">
+		<a th:href="@{/voting_admin_home}" class="navbar-brand">Student Voting System</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#toggleMobileMenu"
+			aria-controls="toggleMobileMenu"
+			aria-expanded="false"
+			aria-label="Toggle Navigation"
+		>
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="toggleMobileMenu">
+			<ul class="navbar-nav ms-auto text-center">
+				<li>
+					<a class="nav-link" th:href="@{/students}">Studenti</a>
+				</li>
+				<li>
+					<a class="nav-link" th:href="@{/elections}">Chestionare de Vot</a>
+				</li>
+				<li>
+					<a class="nav-link active" th:href="@{/options}">Optiuni de Vot</a>
+				</li>
+				<li>
+					<a class="nav-link" th:href="@{/groups}">Grupuri</a>	
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">Profil</a>
+					<ul class="dropdown-menu"  aria-labelledby="navbarDropdown">
+						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities"></span></li>
+						<li class="dropdown-item">
+							<form th:action="@{/logout}" method="post">	
+								<input class="button_logout1" type="submit" value="Logout" />
+							</form>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</div>
+	</nav>
+	
+	<div class="filter">
+		<form th:action="@{/options}">
+			Filtrare: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Denumire"/>
+			&nbsp;
+			<input type="submit" value="Search" />
+			&nbsp;
+			<input type="button" value="Clear" onclick="clearFilter()"/>
+		</form>
+	</div>
 		
-		<div th:if="${message}" class="alert alert-success text-center">
-			[[${message}]]
-		</div>
-		
-		<div>&nbsp;</div>
-		
-		<div>
-			<form th:action="@{/options}">
-				Filter: <input type="text" name="keyword" th:value="${keyword}" required placeholder="Denumire"/>
-				&nbsp;
-				<input type="submit" value="Search" />
-				&nbsp;
-				<input type="button" value="Clear" onclick="clearFilter()"/>
-			</form>
-		</div>
-		
-		<div>&nbsp;</div>
-		
-		  <div>
-			<table class="table table-bordered table table-striped table table-hover" style="width: 50%; margin-left: 25%;">
-				<thead class="table-dark">
-					<tr>
-						<th>ID</th>
-						<th>Denumire</th>
-						<th>Numar Voturi Atrase</th>
-						<th>Alegere</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<th:block th:each="option : ${OptionsList}">
+	<div class="add">
+		<a class="h4 text-decoration-none" th:href="@{/options/new}">Adauga Optiune</a>
+	</div>
+	<div th:if="${message}" class="alert alert-success text-center">
+		[[${message}]]
+	</div>
+	
+	<div class="tables">
+		<table class="table table-bordered table-hover" >
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Denumire</th>
+					<th>Numar Voturi Atrase</th>
+					<th>Alegere</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="option : ${OptionsList}">
 						<tr>
 							<td> [[${option.id_optiune}]]</td>
 							<td> [[${option.denumire}]]</td>
 							<td> [[${option.nr_voturi_atrase}]]</td>
 							<td> [[${option.election.denumire}]]</td>
-							<td>
-								<a class="h4 mr-3 text-decoration-none btn btn-warning" th:href="@{'/options/edit/' + ${option.id_optiune}}">Edit</a>
-								<a class="h4 mr-3 text-decoration-none btn btn-danger" th:href="@{'/options/delete/' + ${option.id_optiune}}">Delete</a>
+							<td class="table-column-buttons">
+								<div class="row d-flex justify-content-center">
+									<div class="col-md-6 text-center">
+										<a class="btn btn-warning" th:href="@{'/options/edit/' + ${option.id_optiune}}"><i class="fas fa-edit"></i></a>
+									</div>
+									<div class="col-md-6 text-center">
+										<a class="btn btn-danger" onclick="return confirm('Sunteti sigur ca doriti sa stergeti aceasta optiune?');" th:href="@{'/options/delete/' + ${option.id_optiune}}"><i class="fa-solid fa-trash-can"></i></a>
+									</div>
+								</div>
 							</td>
 						</tr>
-					</th:block>
-				</tbody>
-			</table>
-		</div>
-		<div>
-			Total Options: [[${totalOptions}]] - Page [[${currentPage}]] of [[${totalPages}]]
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="pagination">
+		Total Optiuni: [[${totalOptions}]] - Page [[${currentPage}]] of [[${totalPages}]]
 			&nbsp;
-			
 			<a th:if="${currentPage > 1}" th:href="@{/options/page/1}">First</a>
 			<span th:unless="${currentPage > 1}">First</span>
-			
+			&nbsp;
 			<a th:if="${currentPage > 1}" th:href="@{'/options/page/' + ${currentPage - 1}}">Previous</a>
 			<span th:unless="${currentPage > 1}">Previous</span>
-			
+			&nbsp;
 			<span th:each="i: ${#numbers.sequence(1, totalPages)}">
 				<a th:if="${i!=currentPage}" th:href="@{'/options/page/' + ${i}}">[[${i}]]</a>
 				<span th:unless="${i!=currentPage}">[[${i}]]</span>
+				&nbsp;
 			</span>
-			
+			&nbsp;
 			<a th:if="${currentPage < totalPages}" th:href="@{'/options/page/' + ${currentPage + 1}}">Next</a>
 			<span th:unless="${currentPage < totalPages}">Next</span>
-			
+			&nbsp;
 			<a th:if="${currentPage < totalPages}" th:href="@{'/options/page/' + ${totalPages}}">Last</a>
 			<span th:unless="${currentPage < totalPages}">Last</span>
-			
-			
-		</div>
 	</div>
-	<a class="btn btn-info" onclick="GoBack()" style="margin-left: 25.5%;">Back</a>
 	<script type="text/javascript">
-		function GoBack(){
-			window.location = "[[@{/voting_admin_home}]]";
-		}
 		function clearFilter(){
-			window.location="/elections";
+			window.location="/options";
 		}
 	</script>
 </body>

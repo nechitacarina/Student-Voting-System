@@ -2,11 +2,14 @@ package com.vote.option;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,22 +49,29 @@ public class OptionController {
 		List<Election> ElectionsList = electionService.listAll();
 		model.addAttribute("option", new Option());
 		model.addAttribute("ElectionsList", ElectionsList);
-		model.addAttribute("pageTitle", "Add New Option");
+		model.addAttribute("pageTitle", "Adauga optiune");
 		return "option_form";
 	}
 	
 	@PostMapping("/options/save")
-	public String saveOption(Option option, RedirectAttributes ra) {
+	public String saveOption(@Valid Option option, BindingResult bindingResult, RedirectAttributes ra, Model model) {
+		if(bindingResult.hasErrors()) {
+			List<Election> ElectionsList = electionService.listAll();
+			model.addAttribute("ElectionsList", ElectionsList);
+			return "option_form";
+		}
+		else {
 		optionService.save(option);
-		ra.addFlashAttribute("message", "The candidate has been saved succesfully.");
+		ra.addFlashAttribute("message", "Optiunea a fost salvata cu succes!");
 		return "redirect:/options";
+		}
 	}
 	
 	@GetMapping("/options/edit/{id_optiune}")
 	public String showOptionEditForm(@PathVariable("id_optiune") Integer id_optiune, Model model, RedirectAttributes ra) {
 			Option option = optionService.get(id_optiune);
 			model.addAttribute("option", option);
-			model.addAttribute("pageTitle", "Edit Option (ID: " + id_optiune + ")");
+			model.addAttribute("pageTitle", "Modificare optiune (ID: " + id_optiune + ")");
 			List<Election> ElectionsList = electionService.listAll();
 			model.addAttribute("ElectionsList", ElectionsList);
 			return "option_form";
@@ -70,7 +80,7 @@ public class OptionController {
 	@GetMapping("/options/delete/{id_optiune}")
 	public String deleteOption(@PathVariable("id_optiune") Integer id_optiune, RedirectAttributes ra) {
 		optionService.delete(id_optiune);
-		ra.addFlashAttribute("message","The candidate has been deleted");
+		ra.addFlashAttribute("message","Optiunea a fost stearsa cu succes!");
 		return "redirect:/options";
 	}
 }

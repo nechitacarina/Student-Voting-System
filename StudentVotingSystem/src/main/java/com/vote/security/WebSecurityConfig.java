@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .antMatchers("/voter_home").hasAuthority("voter")
 		    .antMatchers("/votes").hasAuthority("voter")
 		    
-			.anyRequest().authenticated() //any user have to be authenticated to use the application
+			.anyRequest().permitAll() //any user have to be authenticated to use the application
 			.and()
 			.formLogin().loginPage("/login").permitAll() // any user can use the login form
 						.successHandler(successHandler)

@@ -17,7 +17,7 @@ public class OptionService {
 	private OptionRepository optionRepo;
 	
 	public Page<Option> listAll(int pageNumber, String keyword){
-		Pageable pageable = PageRequest.of(pageNumber - 1, 10);
+		Pageable pageable = PageRequest.of(pageNumber - 1, 5);
 		if(keyword != null) {
 			return  optionRepo.findAll(keyword, pageable);
 		}

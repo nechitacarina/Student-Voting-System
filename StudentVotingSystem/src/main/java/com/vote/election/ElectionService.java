@@ -29,7 +29,7 @@ public class ElectionService {
 	private UserRepository userRepo;
 	
 	public Page<Election> listAll(int pageNumber, String keyword){
-		Pageable pageable = PageRequest.of(pageNumber - 1, 2);
+		Pageable pageable = PageRequest.of(pageNumber - 1, 5);
 		if(keyword != null) {
 			return  electionRepo.findAll(keyword, pageable);
 		}
