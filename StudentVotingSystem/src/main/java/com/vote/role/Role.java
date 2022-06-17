@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class Role {
 		this.denumire = denumire;
 	}
 
-	@ManyToMany(cascade = CascadeType.PERSIST) //The CascadeType will allow to delete the permission but not the role and vice versa
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER) //The CascadeType will allow to delete the permission but not the role and vice versa
 	@JoinTable(
 			name = "permisiune_rol",
 			joinColumns = @JoinColumn(name = "id_permisiune"),

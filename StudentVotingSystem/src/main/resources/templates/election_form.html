@@ -68,6 +68,7 @@
 					<div class="form-group">
 						<label for="TipInput"><b>Tip Alegere</b></label>
 						<input class="form-control form-control-sm" type="text" th:field="*{nr_max_optiuni}" required/>
+						<span>1 = alegere simpla <br> 2 = alegere multipla</span><br>
 						<span id="error" th:if="${#fields.hasErrors('nr_max_optiuni')}" th:errors="*{nr_max_optiuni}">Full name error</span>
 					</div>
 					<div class="form-group">

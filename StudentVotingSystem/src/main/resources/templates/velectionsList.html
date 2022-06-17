@@ -30,7 +30,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">Profil</a>
 					<ul class="dropdown-menu"  aria-labelledby="navbarDropdown">
-						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities"></span></li>
+						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities[0]"></span></li>
 						<li class="dropdown-item">
 							<form th:action="@{/logout}" method="post">	
 								<input class="button_logout1" type="submit" value="Logout" />
@@ -48,7 +48,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<div th:if="${message_success}" class="alert alert alert-success text-center">
 		[[${message_success}]]
 	</div>
-	<div class="table">
+	<div class="table" sec:authorize="hasAnyAuthority('see available elections')">
 		<table class="table table-bordered table-hover">
 				<thead >
 				<tr>

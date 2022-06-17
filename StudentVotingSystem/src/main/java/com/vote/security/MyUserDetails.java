@@ -26,6 +26,9 @@ public class MyUserDetails implements UserDetails {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		for(Role role : roles) {
 			authorities.add(new SimpleGrantedAuthority(role.getDenumire()));
+			role.getPermissions().stream()
+	         .map(p -> new SimpleGrantedAuthority(p.getDescriere()))
+	         .forEach(authorities::add);
 		}
 		return authorities;
 	}

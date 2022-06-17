@@ -39,7 +39,7 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">Profil</a>
 					<ul class="dropdown-menu"  aria-labelledby="navbarDropdown">
-						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities"></span></li>
+						<li class="dropdown-profile">Logat ca:<span sec:authentication="principal.authorities[0]"></span></li>
 						<li class="dropdown-item">
 							<form th:action="@{/logout}" method="post">	
 								<input class="button_logout1" type="submit" value="Logout" />
@@ -61,7 +61,7 @@
 		</form>
 	</div>
 		
-	<div class="add">
+	<div class="add" sec:authorize="hasAnyAuthority('add')">
 		<a class="h4 text-decoration-none" th:href="@{/elections/new}">Adauga Chestionar</a>
 	</div>
 	<div th:if="${message}" class="alert alert-success text-center">
@@ -97,11 +97,11 @@
 						<td> [[${election.groups}]]</td>
 						<td> [[${election.status}]]</td>
 						<td class="table-column-buttons">
-							<div class="row d-flex justify-content-center">
-								<div class="col-md-6 text-center">
+							<div class="row d-flex justify-content-center" >
+								<div class="col-md-6 text-center" sec:authorize="hasAnyAuthority('edit')">
 									<a class="btn btn-warning" th:href="@{'/elections/edit/' + ${election.id_chestionar}}"><i class="fas fa-edit"></i></a>
 								</div>
-								<div class="col-md-6 text-center">
+								<div class="col-md-6 text-center" sec:authorize="hasAnyAuthority('delete')">
 									<a class="btn btn-danger" onclick="return confirm('Sunteti sigur ca doriti sa stergeti acest chestionar?');" th:href="@{'/elections/delete/' + ${election.id_chestionar}}"><i class="fa-solid fa-trash-can"></i></a>
 								</div>
 							</div>

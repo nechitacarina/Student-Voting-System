@@ -34,8 +34,8 @@ public class Election {
 	@Size(min = 3, max = 50)
 	String denumire;
 	
-	@Min(value=1,  message="1=alegere cu raspuns simplu, 2=alegere cu raspuns multiplu")
-	@Max(value=2,  message="1=alegere cu raspuns simplu, 2=alegere cu raspuns multiplu")
+	@Min(value=1,  message="Introduceti 1 sau 2")
+	@Max(value=2,  message="Introduceti 1 sau 2")
 	Integer nr_max_optiuni;
 
 	Date data_start;
